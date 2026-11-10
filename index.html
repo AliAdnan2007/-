@@ -1,0 +1,1371 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#4A90E2">
+<title>كويز جرائم نظام البعث في العراق</title>
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  html {
+    font-size: 16px;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #e0f7fa 0%, #e8eaf6 50%, #f3e5f5 100%);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 12px;
+    line-height: 1.6;
+  }
+
+  .container {
+    background: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+    padding: 24px 20px;
+    max-width: 750px;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+    margin: 0 auto;
+  }
+
+  .container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 5px;
+    background: linear-gradient(90deg, #4A90E2, #50C878, #9B59B6);
+  }
+
+  /* Welcome Screen */
+  .welcome-screen {
+    text-align: center;
+    padding: 20px 10px;
+  }
+
+  .welcome-screen h1 {
+    color: #2c3e50;
+    font-size: 1.6rem;
+    margin-bottom: 12px;
+    background: linear-gradient(135deg, #4A90E2, #50C878);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: 800;
+    line-height: 1.4;
+  }
+
+  .welcome-screen p {
+    color: #555;
+    font-size: 0.95rem;
+    line-height: 1.7;
+    margin-bottom: 18px;
+  }
+
+  .welcome-icon {
+    font-size: 3.2rem;
+    margin-bottom: 12px;
+    animation: bounce 2s infinite;
+  }
+
+  @keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+
+  .info-box {
+    background: linear-gradient(135deg, #f0f9ff, #f0fdf4);
+    border-radius: 14px;
+    padding: 18px 16px;
+    margin: 20px 0;
+    border-right: 4px solid #4A90E2;
+    text-align: right;
+  }
+
+  .info-box h3 {
+    color: #2c3e50;
+    margin-bottom: 12px;
+    font-size: 1rem;
+    font-weight: 700;
+  }
+
+  .info-box ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .info-box ul li {
+    padding: 6px 0;
+    color: #444;
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+
+  .info-box ul li::before {
+    content: '✓ ';
+    color: #50C878;
+    font-weight: bold;
+    margin-left: 6px;
+  }
+
+  /* Quiz Screen */
+  .quiz-screen {
+    display: none;
+  }
+
+  .progress-container {
+    background: #e9ecef;
+    border-radius: 20px;
+    height: 8px;
+    margin-bottom: 18px;
+    overflow: hidden;
+  }
+
+  .progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, #4A90E2, #50C878);
+    width: 0%;
+    transition: width 0.5s ease;
+    border-radius: 20px;
+  }
+
+  .question-counter {
+    text-align: center;
+    color: #6c757d;
+    font-size: 0.85rem;
+    margin-bottom: 12px;
+    font-weight: 600;
+  }
+
+  .question-type {
+    display: inline-block;
+    padding: 5px 14px;
+    border-radius: 18px;
+    font-size: 0.75rem;
+    margin-bottom: 15px;
+    font-weight: 700;
+  }
+
+  .type-mcq {
+    background: #e3f2fd;
+    color: #1565c0;
+  }
+
+  .type-tf {
+    background: #f3e5f5;
+    color: #7b1fa2;
+  }
+
+  .question-text {
+    background: #f8f9fa;
+    padding: 18px 16px;
+    border-radius: 14px;
+    font-size: 1rem;
+    color: #2c3e50;
+    margin-bottom: 18px;
+    line-height: 1.8;
+    font-weight: 600;
+    border-right: 4px solid #4A90E2;
+  }
+
+  .options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .option {
+    background: #ffffff;
+    border: 2px solid #e9ecef;
+    padding: 14px 16px;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    font-size: 0.95rem;
+    color: #333;
+    text-align: right;
+    display: flex;
+    align-items: center;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+  }
+
+  .option:hover {
+    border-color: #4A90E2;
+    background: #f0f8ff;
+  }
+
+  .option:active {
+    transform: scale(0.98);
+  }
+
+  .option.selected {
+    background: #e3f2fd;
+    border-color: #4A90E2;
+  }
+
+  .option.correct {
+    background: #d4edda;
+    color: #155724;
+    border-color: #50C878;
+  }
+
+  .option.wrong {
+    background: #f8d7da;
+    color: #721c24;
+    border-color: #dc3545;
+  }
+
+  .option-letter {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: #e9ecef;
+    color: #495057;
+    font-weight: bold;
+    margin-left: 10px;
+    flex-shrink: 0;
+    font-size: 0.85rem;
+  }
+
+  .option.correct .option-letter {
+    background: #50C878;
+    color: white;
+  }
+
+  .option.wrong .option-letter {
+    background: #dc3545;
+    color: white;
+  }
+
+  .feedback {
+    margin-top: 16px;
+    padding: 12px;
+    border-radius: 12px;
+    text-align: center;
+    font-size: 0.95rem;
+    font-weight: 600;
+    display: none;
+  }
+
+  .feedback.correct {
+    background: #d4edda;
+    color: #155724;
+    border: 2px solid #50C878;
+  }
+
+  .feedback.wrong {
+    background: #f8d7da;
+    color: #721c24;
+    border: 2px solid #dc3545;
+  }
+
+  .btn {
+    background: linear-gradient(135deg, #4A90E2, #50C878);
+    color: white;
+    border: none;
+    padding: 14px 30px;
+    border-radius: 25px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 700;
+    margin-top: 20px;
+    box-shadow: 0 4px 15px rgba(74, 144, 226, 0.25);
+    -webkit-tap-highlight-color: transparent;
+    width: 100%;
+    max-width: 320px;
+  }
+
+  .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(74, 144, 226, 0.35);
+  }
+
+  .btn:active {
+    transform: translateY(0);
+  }
+
+  .btn:disabled {
+    background: #cbd5e1;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+  }
+
+  .btn-container {
+    text-align: center;
+    margin-top: 20px;
+  }
+
+  /* Result Screen */
+  .result-screen {
+    display: none;
+    text-align: center;
+    padding: 20px 10px;
+  }
+
+  .result-icon {
+    font-size: 3.5rem;
+    margin-bottom: 12px;
+  }
+
+  .result-screen h2 {
+    color: #2c3e50;
+    font-size: 1.5rem;
+    margin-bottom: 12px;
+    font-weight: 800;
+  }
+
+  .score-display {
+    background: linear-gradient(135deg, #4A90E2, #50C878);
+    color: white;
+    padding: 24px 20px;
+    border-radius: 18px;
+    margin: 20px 0;
+    box-shadow: 0 8px 25px rgba(74, 144, 226, 0.2);
+  }
+
+  .score-number {
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin: 8px 0;
+  }
+
+  .score-text {
+    font-size: 1rem;
+    opacity: 0.95;
+  }
+
+  .result-message {
+    font-size: 0.95rem;
+    color: #555;
+    margin: 18px 0;
+    padding: 14px;
+    background: #f8f9fa;
+    border-radius: 12px;
+    line-height: 1.6;
+  }
+
+  .stats {
+    display: flex;
+    justify-content: space-around;
+    margin: 20px 0;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .stat-box {
+    background: #f8f9fa;
+    padding: 16px 12px;
+    border-radius: 14px;
+    min-width: 110px;
+    flex: 1;
+  }
+
+  .stat-box h4 {
+    color: #6c757d;
+    font-size: 0.8rem;
+    margin-bottom: 6px;
+    font-weight: 600;
+  }
+
+  .stat-box .stat-value {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #2c3e50;
+  }
+
+  .stat-box.correct-stat {
+    border-top: 4px solid #50C878;
+  }
+
+  .stat-box.wrong-stat {
+    border-top: 4px solid #dc3545;
+  }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    margin-top: 30px;
+    padding-top: 18px;
+    border-top: 2px solid #f0f0f0;
+    color: #6c757d;
+    font-size: 0.8rem;
+  }
+
+  .footer p {
+    margin: 4px 0;
+    line-height: 1.5;
+  }
+
+  .footer .developer {
+    color: #4A90E2;
+    font-weight: 700;
+  }
+
+  /* Responsive - Tablet */
+  @media (min-width: 768px) {
+    body {
+      padding: 20px;
+      align-items: center;
+    }
+
+    .container {
+      padding: 40px;
+      border-radius: 24px;
+    }
+
+    .welcome-screen h1 {
+      font-size: 2.2rem;
+    }
+
+    .welcome-screen p {
+      font-size: 1.15rem;
+    }
+
+    .welcome-icon {
+      font-size: 4.5rem;
+    }
+
+    .info-box {
+      padding: 25px;
+    }
+
+    .info-box h3 {
+      font-size: 1.2rem;
+    }
+
+    .info-box ul li {
+      font-size: 1.05rem;
+    }
+
+    .question-counter {
+      font-size: 0.95rem;
+    }
+
+    .question-type {
+      font-size: 0.85rem;
+      padding: 6px 16px;
+    }
+
+    .question-text {
+      padding: 25px;
+      font-size: 1.2rem;
+    }
+
+    .option {
+      padding: 16px 20px;
+      font-size: 1.05rem;
+    }
+
+    .option:hover {
+      transform: translateX(-4px);
+    }
+
+    .option-letter {
+      width: 30px;
+      height: 30px;
+      font-size: 0.9rem;
+    }
+
+    .feedback {
+      font-size: 1.05rem;
+    }
+
+    .btn {
+      width: auto;
+      padding: 14px 40px;
+      font-size: 1.1rem;
+    }
+
+    .result-icon {
+      font-size: 4.5rem;
+    }
+
+    .result-screen h2 {
+      font-size: 2rem;
+    }
+
+    .score-number {
+      font-size: 3.5rem;
+    }
+
+    .score-text {
+      font-size: 1.2rem;
+    }
+
+    .result-message {
+      font-size: 1.15rem;
+    }
+
+    .stat-box {
+      padding: 20px;
+      min-width: 130px;
+    }
+
+    .stat-box h4 {
+      font-size: 0.9rem;
+    }
+
+    .stat-box .stat-value {
+      font-size: 1.8rem;
+    }
+
+    .footer {
+      font-size: 0.9rem;
+    }
+  }
+
+  /* Responsive - Large Desktop */
+  @media (min-width: 1200px) {
+    .container {
+      max-width: 850px;
+      padding: 50px;
+    }
+
+    .welcome-screen h1 {
+      font-size: 2.5rem;
+    }
+
+    .question-text {
+      font-size: 1.3rem;
+    }
+  }
+
+  /* Responsive - Small Mobile */
+  @media (max-width: 480px) {
+    body {
+      padding: 8px;
+    }
+
+    .container {
+      padding: 18px 14px;
+      border-radius: 16px;
+    }
+
+    .welcome-screen h1 {
+      font-size: 1.35rem;
+    }
+
+    .welcome-screen p {
+      font-size: 0.88rem;
+    }
+
+    .welcome-icon {
+      font-size: 2.5rem;
+    }
+
+    .info-box {
+      padding: 14px 12px;
+    }
+
+    .info-box h3 {
+      font-size: 0.95rem;
+    }
+
+    .info-box ul li {
+      font-size: 0.85rem;
+    }
+
+    .question-text {
+      padding: 15px 12px;
+      font-size: 0.92rem;
+      line-height: 1.7;
+    }
+
+    .option {
+      padding: 12px 14px;
+      font-size: 0.88rem;
+    }
+
+    .option-letter {
+      width: 26px;
+      height: 26px;
+      font-size: 0.8rem;
+      margin-left: 8px;
+    }
+
+    .btn {
+      padding: 13px 20px;
+      font-size: 0.95rem;
+    }
+
+    .result-icon {
+      font-size: 2.8rem;
+    }
+
+    .result-screen h2 {
+      font-size: 1.3rem;
+    }
+
+    .score-number {
+      font-size: 2rem;
+    }
+
+    .score-text {
+      font-size: 0.9rem;
+    }
+
+    .result-message {
+      font-size: 0.88rem;
+      padding: 12px;
+    }
+
+    .stat-box {
+      padding: 12px 10px;
+      min-width: 100px;
+    }
+
+    .stat-box h4 {
+      font-size: 0.75rem;
+    }
+
+    .stat-box .stat-value {
+      font-size: 1.3rem;
+    }
+
+    .footer {
+      font-size: 0.75rem;
+      margin-top: 25px;
+    }
+  }
+
+  /* Very small screens */
+  @media (max-width: 360px) {
+    .container {
+      padding: 16px 12px;
+    }
+
+    .welcome-screen h1 {
+      font-size: 1.2rem;
+    }
+
+    .question-text {
+      font-size: 0.88rem;
+      padding: 14px 10px;
+    }
+
+    .option {
+      padding: 11px 12px;
+      font-size: 0.85rem;
+    }
+  }
+
+  /* Touch-friendly improvements */
+  @media (hover: none) and (pointer: coarse) {
+    .option {
+      min-height: 50px;
+    }
+
+    .btn {
+      min-height: 50px;
+    }
+  }
+
+  /* Dark mode support */
+  @media (prefers-color-scheme: dark) {
+    body {
+      background: linear-gradient(135deg, #1a2332 0%, #2c3e50 50%, #34495e 100%);
+    }
+
+    .container {
+      background: #2c3e50;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    }
+
+    .welcome-screen h1 {
+      background: linear-gradient(135deg, #74b9ff, #55efc4);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .welcome-screen p,
+    .info-box ul li,
+    .question-text,
+    .option,
+    .result-message {
+      color: #ecf0f1;
+    }
+
+    .info-box {
+      background: linear-gradient(135deg, #34495e, #3d566e);
+    }
+
+    .question-text {
+      background: #34495e;
+    }
+
+    .option {
+      background: #34495e;
+      border-color: #4a6278;
+    }
+
+    .option:hover {
+      background: #3d566e;
+    }
+
+    .option.selected {
+      background: #4a6278;
+    }
+
+    .option-letter {
+      background: #4a6278;
+      color: #ecf0f1;
+    }
+
+    .result-message {
+      background: #34495e;
+    }
+
+    .stat-box {
+      background: #34495e;
+    }
+
+    .stat-box h4 {
+      color: #bdc3c7;
+    }
+
+    .stat-box .stat-value {
+      color: #ecf0f1;
+    }
+
+    .footer {
+      color: #95a5a6;
+      border-top-color: #34495e;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- Welcome Screen -->
+  <div class="welcome-screen" id="welcomeScreen">
+    <div class="welcome-icon">📚</div>
+    <h1>مرحباً بك في اختبار جرائم نظام البعث</h1>
+    <p>اختبار شامل "جرائم نظام البعث في العراق وفق قانون المحكمة الجنائية العراقية العليا رقم 10 لسنة 2005"</p>
+    
+    <div class="info-box">
+      <h3>📋 تفاصيل الاختبار</h3>
+      <ul>
+        <li>عدد الأسئلة الكلي: 40 سؤالاً</li>
+        <li>20 سؤال اختيارات متعدد (MCQ)</li>
+        <li>20 سؤال صح أو خطأ (True/False)</li>
+        <li>الأسئلة متعاقبة (اختيار متعدد ثم صح/خطأ)</li>
+        <li>الدرجة النهائية من 40 درجة</li>
+      </ul>
+    </div>
+
+    <button class="btn" onclick="startQuiz()">ابدأ الاختبار الآن 🚀</button>
+  </div>
+
+  <!-- Quiz Screen -->
+  <div class="quiz-screen" id="quizScreen">
+    <div class="progress-container">
+      <div class="progress-bar" id="progressBar"></div>
+    </div>
+    <div class="question-counter" id="questionCounter"></div>
+    <div id="questionType" class="question-type"></div>
+    <div class="question-text" id="questionText"></div>
+    <div class="options" id="optionsContainer"></div>
+    <div class="feedback" id="feedback"></div>
+    <div class="btn-container">
+      <button class="btn" id="nextBtn" onclick="nextQuestion()" disabled>السؤال التالي ←</button>
+    </div>
+  </div>
+
+  <!-- Result Screen -->
+  <div class="result-screen" id="resultScreen">
+    <div class="result-icon" id="resultIcon">🏆</div>
+    <h2>انتهى الاختبار بنجاح!</h2>
+    
+    <div class="score-display">
+      <div class="score-text">درجتك النهائية</div>
+      <div class="score-number"><span id="finalScore">0</span> / 40</div>
+      <div class="score-text" id="percentageText">0%</div>
+    </div>
+
+    <div class="stats">
+      <div class="stat-box correct-stat">
+        <h4>الإجابات الصحيحة</h4>
+        <div class="stat-value" id="correctCount">0</div>
+      </div>
+      <div class="stat-box wrong-stat">
+        <h4>الإجابات الخاطئة</h4>
+        <div class="stat-value" id="wrongCount">0</div>
+      </div>
+    </div>
+
+    <div class="result-message" id="resultMessage"></div>
+
+    <button class="btn" onclick="restartQuiz()">إعادة الاختبار 🔄</button>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <p>Programmed by: <span class="developer">Ali Adnan</span></p>
+    <p>© 2026 All Rights Reserved</p>
+  </div>
+
+</div>
+
+<script>
+const questions = [
+  // 1. MCQ
+  {
+    type: 'mcq',
+    question: 'ما هو تعريف الجريمة لغةً وفقاً للنص؟',
+    options: [
+      'هو الجرم اي التعدي ,الانحراف والشذوذ عن السلوك الاعتيادي ',
+      'كل فعل أو ترك يعاقب عليه القانون',
+      'أفعال وسلوكيات تضرب المصلحة العامة للمجتمع',
+      'عملية انتزاع أموال أو ممتلكات شخص ما بشكل غير قانوني'
+    ],
+    correct: 0
+  },
+  // 2. T/F
+  {
+    type: 'tf',
+    question: 'يُعرّف علم الاجتماع الجريمة بأنها: "سلوك معادٍ أو فعل لا إرادي ناتج عن صراعات نفسية تحدثها مكتوبات".',
+    options: ['صح ✓', 'خطأ ✗'],
+    correct: 1
+  },
+  // 3. MCQ
+  {
+    type: 'mcq',
+    question: 'كيف يُعرّف علم القانون الجريمة وفقاً للنص؟',
+    options: [
+      'كل ارتكاب فعل نهى الله عنه أو عصاه أمر الله به',
+      'كل فعل أو ترك يعاقب عليه القانون، أي ما نص عليه القانون على أنه يوجب عقوبة صريحة وواضحة',
+      'الأفعال التي تشكل خطراً شديداً على السلم والأمن الدولي',
+      'ارتكاب الأفعال أو التصرفات التي تضاد القيم والمعايير الاجتماعية'
+    ],
+    correct: 1
+  },
+  // 4. T/F
+  {
+    type: 'tf',
+    question: 'تعريف الجريمة من منظور علم الشريعة هو: "كل ارتكاب فعل نهى الله (عز وجل) عنه أو عصاه أمر الله به، فهو يمثل اعتداءً على حق أو مصلحة من مصالح العباد".',
+    options: ['صح ✓', 'خطأ ✗'],
+    correct: 0
+  },
+  // 5. MCQ
+  {
+    type: 'mcq',
+    question: 'أي من الجرائم التالية تمثل الأفعال التي تشكل خطراً شديداً على السلم والأمن الدولي وتهدد أمن الدولة وسيادتها؟',
+    options: [
+      'الجرائم الاجتماعية',
+      'الجرائم النفسية',
+      'الجرائم الدولية',
+      'جرائم السلطة والحكومة'
+    ],
+    correct: 2
+  },
+  // 6. T/F
+  {
+    type: 'tf',
+    question: 'الجرائم السياسية هي مجموعة من الأفعال القصدية التي يتم الاعتداء بها على رجال الدولة أو أصحاب السلك الدبلوماسي أو قادة الفكر السياسي أو الحكومة بسبب آراء سياسية يحملونها.',
+    options: ['صح ✓', 'خطأ ✗'],
+    correct: 0
+  },
+  // 7. MCQ
+  {
+    type: 'mcq',
+    question: 'ما هي الجريمة التي تُعرّف بأنها: "ارتكاب الأفعال أو التصرفات التي تضاد القيم والمعايير الاجتماعية للمجتمع بما يلحق ضرراً به وبأفراده، مثل السرقة والتهرب من المسؤوليات الاجتماعية"؟',
+    options: [
+      'الجرائم البيئية',
+      'الجرائم الاجتماعية',
+      'جرائم حرية المعتقد والدين',
+      'الجرائم النفسية'
+    ],
+    correct: 1
+  },
+  // 8. T/F
+  {
+    type: 'tf',
+    question: 'جرائم السلطة والحكومة هي الأفعال القانونية التي ترتكبها مؤسسات الدولة بشكل رسمي ووفقاً للقانون.',
+    options: ['صح ✓', 'خطأ ✗'],
+    correct: 1
+  },
+  // 9. MCQ
+  {
+    type: 'mcq',
+    question: 'ما هو تعريف "جريمة مصادرة الأموال" وفقاً للنص؟',
+    options: [
+      'عملية إجبار الأفراد على مغادرة منازلهم',
+      'عملية انتزاع أموال أو ممتلكات شخص ما بشكل غير قانوني أو قسري دون وجه حق',
+      'فعل أو امتناع غير عمدي يصدر عن شخص طبيعي يحاول الإضرار بالعناصر البيئية',
+      'أي سلوك أو تصرف يصدر من حكومة يتضمن اعتداءً على الحقوق الأساسية'
+    ],
+    correct: 1
+  },
+  // 10. T/F
+  {
+    type: 'tf',
+    question: 'الجرائم النفسية هي جرائم تنطوي على أفعال وسلوكيات وتصرفات تحض على العنف النفسي أو العاطفي، وعادة ما تكون هذه الجرائم مرتبطة بالتهديدات النفسية.',
+    options: ['صح ✓', 'خطأ ✗'],
+    correct: 0
+  },
+  // 11. MCQ
+  {
+    type: 'mcq',
+    question: 'ماذا تشمل "جرائم حرية المعتقد والدين" وفقاً للنص؟',
+    options: [
+      'قتل أفراد من الجماعة القومية فقط',
+      'ازدراء الأديان، إرغام العلماء على تغيير معتقداتهم، الاعتداء على الرموز الدينية، ومنع دور العبادة والمقدسات',
+      'تدمير الممتلكات العامة والاستيلاء عليها دون ضرورة عسكرية',
+      'النقل القسري للسكان المدنيين'
+    ],
+    correct: 1
+  },
+  // 12. T/F
+  {
+    type: 'tf',
+    question: 'جريمة التهجير هي عملية إجبار الأفراد أو المجتمعات على مغادرة منازلهم وأماكن إقامتهم بشكل مؤقت أو دائم وبموافقتهم الحرة.',
+    options: ['صح ✓', 'خطأ ✗'],
+    correct: 1
+  },
+  // 13. MCQ
+  {
+    type: 'mcq',
+    question: 'ما هو تعريف "الجرائم البيئية" حسب النص؟',
+    options: [
+      'فعل أو امتناع غير عمدي أو عمدي، يصدر عن شخص طبيعي أو معنوي، يحاول الإضرار بأحد العناصر البيئية مباشرة أو غير مباشرة',
+      'انتهاك حقوق الإنسان الأساسية من قبل الحكومة',
+      'مصادرة الأراضي الزراعية لصالح الدولة',
+      'استخدام الأسلحة الكيمياوية فقط'
+    ],
+    correct: 0
+  },
+  // 14. T/F
+  {
+    type: 'tf',
+    question: 'انتهاكات حقوق الإنسان يقصد بها أي سلوك أو تصرف يصدر من حكومة أو جهة فاعلة، يتضمن اعتداءً على الحقوق الأساسية وكرامة الإنسانية.',
+    options: ['صح ✓', 'خطأ ✗'],
+    correct: 0
+  },
+  // 15. MCQ
+  {
+    type: 'mcq',
+    question: 'وفقاً لقانون المحكمة الجنائية العراقية العليا رقم 10 لسنة 2005، ما هي الجرائم التي يرتكبها نظام البعث؟',
+    options: [
+      'جرائم الإبادة الجماعية، وجرائم ضد الإنسانية، وجرائم حرب، وانتهاكات للقوانين العراقية',
+      'الجرائم المرورية والجرائم المالية فقط',
+      'الجرائم النفسية والجرائم البيئية فقط',
+      'جرائم حرية المعتقد والدين فقط'
+    ],
+    correct: 0
+  },
+  // 16. T/F
+  {
+    type: 'tf',
+    question: 'الإبادة الجماعية تعني الأفعال المرتكبة بقصد إهلاك جماعة قومية أو إثنية أو دينية كلياً أو جزئياً.',
+    options: ['صح ✓', 'خطأ ✗'],
+    correct: 0
+  },
+  // 17. MCQ
+  {
+    type: 'mcq',
+    question: 'أي من الأفعال التالية يُعد من أفعال "الإبادة الجماعية" حسب النص؟',
+    options: [
+      'النقل القسري للسكان فقط',
+      'فرض تدابير تستهدف منع الإنجاب داخل الجماعة، ونقل أطفال الجماعة عنوة إلى جماعة أخرى',
+      'التدمير الواسع للممتلكات بدون ضرورة عسكرية',
+      'أخذ رهائن'
+    ],
+    correct: 1
+  },
+  // 18. T/F
+  {
+    type: 'tf',
+    question: 'الجرائم ضد الإنسانية هي الأفعال التي ارتكبت في إطار هجوم واسع النطاق أو منهجي موجه ضد أي مجموعة من السكان المدنيين، وتشمل القتل العمد، الإبادة، الاغتصاب، والنقل القسري للسكان.',
+    options: ['صح ✓', 'خطأ ✗'],
+    correct: 0
+  },
+  // 19. MCQ
+  {
+    type: 'mcq',
+    question: 'أي من الخيارات التالية يُعد من "جرائم الحرب" وفقاً للنص؟',
+    options: [
+      'المعاملة غير الإنسانية أو التعذيب بما في ذلك إجراء تجارب بيولوجية',
+      'قتل أفراد من جماعة قومية بقصد إهلاكها',
+      'اضطهاد جماعة معينة لأسباب سياسية أو عرقية',
+      'النقل القسري للسكان المدنيين'
+    ],
+    correct: 0
+  },
+  // 20. T/F
+  {
+    type: 'tf',
+    question: 'من جرائم الحرب: الحرمان المتعمد لأسير حرب أو شخص محمي من حقه في أن يحاكم أمام محكمة عادلة ونزيهة.',
+    options: ['صح ✓', 'خطأ ✗'],
+    correct: 0
+  },
+  // 21. MCQ
+  {
+    type: 'mcq',
+    question: 'ما هي الجريمة المرتكبة سنة 1982 والتي أصدرت المحكمة الجنائية العراقية العليا حكماً بشأنها؟',
+    options: [
+      'جريمة إعدام التجار',
+      'جريمة مذبحة الدجيل',
+      'جريمة أحداث الجماعة',
+      'جريمة تهجير الكرد الفيليين'
+    ],
+    correct: 1
+  },
+  // 22. T/F
+  {
+    type: 'tf',
+    question: 'جريمة قصص مدينة حلبجة سنة 1988 كانت باستخدام السلاح الكيمياوي (غاز الخردل، غاز السارين) وتجاوز عدد الضحايا 5000 من الأطفال والنساء والشيوخ، وصدر حكم الإعدام بحق علي حسن المجيد.',
+    options: ['صح ✓', 'خطأ ✗'],
+    correct: 0
+  },
+  // 23. MCQ
+  {
+    type: 'mcq',
+    question: 'ما هي "جريمة عمليات الأنفال" وفقاً للقرارات الصادرة من المحكمة الجنائية العراقية العليا؟',
+    options: [
+      'الجريمة التي نفذها نظام البعث الدكتاتوري ضد المواطنين المدنيين الأكراد',
+      'الجريمة المرتكبة ضد تجار العراق سنة 1992',
+      'الجريمة المرتكبة بحق السيد محمد محمد صادق الصدر',
+      'الجريمة المرتكبة بحق الكرد الفيليين في بغداد'
+    ],
+    correct: 0
+  },
+  // 24. T/F
+  {
+    type: 'tf',
+    question: 'من الجرائم التي أصدرت المحكمة الجنائية العراقية العليا قرارات بشأنها: "جريمة إعدام عدد من تجار العراق سنة 1992".',
+    options: ['صح ✓', 'خطأ ✗'],
+    correct: 0
+  },
+  // 25. MCQ
+  {
+    type: 'mcq',
+    question: 'تعود أحداث "جريمة أحداث الجماعة" (مقتل السيد محمد محمد صادق الصدر ونجليه) إلى أي سنة ومحافظة حسب النص؟',
+    options: [
+      'سنة 1988 في محافظة حلبجة',
+      'سنة 1999 في محافظة النجف',
+      'سنة 1992 في محافظة بغداد',
+      'سنة 1982 في محافظة الدجيل'
+    ],
+    correct: 1
+  },
+  // 26. T/F
+  {
+    type: 'tf',
+    question: 'ارتكب نظام البعث الدكتاتوري جرائم عديدة ضد الأحزاب السياسية في العراق وأصدر قراراً ينص على تجريم المتعاملين مع تلك الأحزاب وأثر رجعي.',
+    options: ['صح ✓', 'خطأ ✗'],
+    correct: 0
+  },
+  // 27. MCQ
+  {
+    type: 'mcq',
+    question: 'كيف وصفت  "جريمة تهجير الكرد الفيليين"؟',
+    options: [
+      'تمثلت باغتيال عشرات الآلاف من الأسر الكردية الفيلية في بغداد ومحافظات الوسط وجنوب العراق',
+      'تمثلت في قصف مدينة حلبجة فقط',
+      'تمثلت في مذبحة الدجيل سنة 1982',
+      'تمثلت في إعدام التجار سنة 1992'
+    ],
+    correct: 0
+  },
+  // 28. T/F
+  {
+    type: 'tf',
+    question: 'تعريف الجريمة من منظور علم النفس هو: "أفعال وسلوكيات تضرب المصلحة العامة للمجتمع".',
+    options: ['صح ✓', 'خطأ ✗'],
+    correct: 1
+  },
+  // 29. MCQ
+  {
+    type: 'mcq',
+    question: 'ما هو تعريف "جرائم السلطة والحكومة"؟',
+    options: [
+      'الأفعال غير القانونية أو الفاسدة التي ترتكبها أفراد أو مؤسسات في مواقع سلطوية أو حكومية',
+      'الأفعال التي تشكل خطراً شديداً على السلم والأمن الدولي',
+      'الأفعال التي تنتهك المعتقدات والقيم الدينية',
+      'عملية انتزاع أموال أو ممتلكات شخص ما بشكل قسري'
+    ],
+    correct: 0
+  },
+  // 30. T/F
+  {
+    type: 'tf',
+    question: 'الجرائم الدولية تشمل: جرائم الإبادة الجماعية، وجرائم ضد الإنسانية، وجرائم الحرب.',
+    options: ['صح ✓', 'خطأ ✗'],
+    correct: 0
+  },
+  // 31. MCQ
+  {
+    type: 'mcq',
+    question: 'أي من التالي يُعد من أشكال الإبادة الجماعية',
+    options: [
+      'أخذ رهائن',
+      'قتل أفراد من الجماعة، وإلحاق ضرر جسدي أو عقلي بأفراد من الجماعة',
+      'التدمير الواسع للممتلكات والاستيلاء عليها دون أن تبرره ضرورة عسكرية',
+      'إكراه أسير حرب على الخدمة في قوات دولة معادية'
+    ],
+    correct: 1
+  },
+  // 32. T/F
+  {
+    type: 'tf',
+    question: 'من الجرائم ضد الإنسانية: اضطهاد جماعة معينة لأسباب سياسية أو عرقية أو قومية أو دينية أو ثقافية أو متعلقة بالجنس.',
+    options: ['صح ✓', 'خطأ ✗'],
+    correct: 0
+  },
+  // 33. MCQ
+  {
+    type: 'mcq',
+    question: 'ما هو الفعل الذي يُعد من "جرائم الحرب" ويتعلق بالأسرى أو الأشخاص المحميين؟',
+    options: [
+      'نقل أطفال الجماعة عنوة إلى جماعة أخرى',
+      'إكراه أسير حرب أو شخص محمي على الخدمة في قوات دولة معادية، وأخذ رهائن',
+      'فرض تدابير تستهدف منع الإنجاب داخل الجماعة',
+      'قتل أفراد من الجماعة القومية'
+    ],
+    correct: 1
+  },
+  // 34. T/F
+  {
+    type: 'tf',
+    question: 'جريمة التهجير تحدث لأسباب متنوعة مثل: الصراع الديني أو السياسي، والتطهير العرقي أو القومي، والعنف، أو لأسباب أخرى.',
+    options: ['صح ✓', 'خطأ ✗'],
+    correct: 0
+  },
+  // 35. MCQ
+  {
+    type: 'mcq',
+    question: 'ما هي الجهة التي يصدر عنها انتهاك حقوق الإنسان ؟',
+    options: [
+      'أفراد المجتمع فقط',
+      'حكومة أو جهة فاعلة',
+      'المنظمات الدولية فقط',
+      'المؤسسات الدينية فقط'
+    ],
+    correct: 1
+  },
+  // 36. T/F
+  {
+    type: 'tf',
+    question: 'جريمة مذبحة الدجيل وقعت في سنة 1988.',
+    options: ['صح ✓', 'خطأ ✗'],
+    correct: 1
+  },
+  // 37. MCQ
+  {
+    type: 'mcq',
+    question: 'ماذا يقصد بـ "الجرائم النفسية" ؟',
+    options: [
+      'الأفعال التي تنتهك المعتقدات والقيم الدينية',
+      'جرائم تنطوي على أفعال وسلوكيات وتصرفات تحض على العنف النفسي أو العاطفي، وعادة ما تكون مرتبطة بالتهديدات النفسية',
+      'الأفعال غير القانونية التي ترتكبها مؤسسات الدولة',
+      'السلوك المعادي الناتج عن صراعات نفسية'
+    ],
+    correct: 1
+  },
+  // 38. T/F
+  {
+    type: 'tf',
+    question: 'قرار تجريم المتعاملين مع الأحزاب السياسية في العراق صدر من نظام البعث الدكتاتوري وكان له أثر رجعي.',
+    options: ['صح ✓', 'خطأ ✗'],
+    correct: 0
+  },
+  // 39. MCQ
+  {
+    type: 'mcq',
+    question: 'ما هو عدد الضحايا المذكور في النص لجريمة حلبجة سنة 1988؟',
+    options: [
+      'تجاوز 1000 ضحية',
+      'تجاوز 5000 ضحية من الأطفال والنساء والشيوخ',
+      'تجاوز 10000 ضحية',
+      'تجاوز 3000 ضحية'
+    ],
+    correct: 1
+  },
+  // 40. T/F
+  {
+    type: 'tf',
+    question: 'جريمة تهجير الكرد الفيليين تمثلت باغتيال عشرات الآلاف من الأسر الكردية الفيلية في بغداد ومحافظات الوسط وجنوب العراق.',
+    options: ['صح ✓', 'خطأ ✗'],
+    correct: 0
+  }
+];
+
+let currentQuestion = 0;
+let score = 0;
+let answered = false;
+
+function startQuiz() {
+  document.getElementById('welcomeScreen').style.display = 'none';
+  document.getElementById('quizScreen').style.display = 'block';
+  showQuestion();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function showQuestion() {
+  answered = false;
+  const q = questions[currentQuestion];
+  
+  const progress = ((currentQuestion) / questions.length) * 100;
+  document.getElementById('progressBar').style.width = progress + '%';
+  document.getElementById('questionCounter').textContent = `السؤال ${currentQuestion + 1} من ${questions.length}`;
+  
+  const typeBadge = document.getElementById('questionType');
+  if (q.type === 'mcq') {
+    typeBadge.textContent = '📝 اختيار متعدد';
+    typeBadge.className = 'question-type type-mcq';
+  } else {
+    typeBadge.textContent = '✓✗ صح أو خطأ';
+    typeBadge.className = 'question-type type-tf';
+  }
+  
+  document.getElementById('questionText').textContent = q.question;
+  
+  const optionsContainer = document.getElementById('optionsContainer');
+  optionsContainer.innerHTML = '';
+  
+  const letters = ['أ', 'ب', 'ج', 'د'];
+  
+  q.options.forEach((option, index) => {
+    const optionDiv = document.createElement('div');
+    optionDiv.className = 'option';
+    optionDiv.onclick = () => selectOption(index);
+    
+    if (q.type === 'mcq') {
+      optionDiv.innerHTML = `<span class="option-letter">${letters[index]}</span><span>${option}</span>`;
+    } else {
+      optionDiv.innerHTML = `<span>${option}</span>`;
+    }
+    
+    optionsContainer.appendChild(optionDiv);
+  });
+  
+  document.getElementById('feedback').style.display = 'none';
+  document.getElementById('nextBtn').disabled = true;
+  
+  if (currentQuestion === questions.length - 1) {
+    document.getElementById('nextBtn').textContent = 'عرض النتيجة النهائية 🏆';
+  } else {
+    document.getElementById('nextBtn').textContent = 'السؤال التالي ←';
+  }
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function selectOption(index) {
+  if (answered) return;
+  answered = true;
+  
+  const q = questions[currentQuestion];
+  const options = document.querySelectorAll('.option');
+  
+  options[index].classList.add('selected');
+  
+  setTimeout(() => {
+    if (index === q.correct) {
+      options[index].classList.remove('selected');
+      options[index].classList.add('correct');
+      score++;
+      showFeedback(true);
+    } else {
+      options[index].classList.remove('selected');
+      options[index].classList.add('wrong');
+      options[q.correct].classList.add('correct');
+      showFeedback(false);
+    }
+    
+    document.getElementById('nextBtn').disabled = false;
+  }, 300);
+}
+
+function showFeedback(isCorrect) {
+  const feedback = document.getElementById('feedback');
+  feedback.style.display = 'block';
+  
+  if (isCorrect) {
+    feedback.className = 'feedback correct';
+    feedback.innerHTML = '✓ إجابة صحيحة! أحسنت';
+  } else {
+    feedback.className = 'feedback wrong';
+    feedback.innerHTML = '✗ إجابة خاطئة، الإجابة الصحيحة موضحة باللون الأخضر';
+  }
+}
+
+function nextQuestion() {
+  currentQuestion++;
+  
+  if (currentQuestion < questions.length) {
+    showQuestion();
+  } else {
+    showResult();
+  }
+}
+
+function showResult() {
+  document.getElementById('quizScreen').style.display = 'none';
+  document.getElementById('resultScreen').style.display = 'block';
+  
+  const percentage = Math.round((score / questions.length) * 100);
+  
+  document.getElementById('finalScore').textContent = score;
+  document.getElementById('percentageText').textContent = percentage + '%';
+  document.getElementById('correctCount').textContent = score;
+  document.getElementById('wrongCount').textContent = questions.length - score;
+  
+  let icon, message;
+  if (percentage >= 90) {
+    icon = '🏆';
+    message = 'ممتاز! أداء رائع جداً، إتقان كامل للمادة العلمية 🌟';
+  } else if (percentage >= 75) {
+    icon = '🎉';
+    message = 'جيد جداً! أداء مميز ومعلوماتك دقيقة 👏';
+  } else if (percentage >= 60) {
+    icon = '😊';
+    message = 'جيد! يمكنك تحسين أدائك بمراجعة بعض النقاط في الملزمة 💪';
+  } else if (percentage >= 50) {
+    icon = '📚';
+    message = 'مقبول، يُنصح بإعادة قراءة النصوص المؤشرة في الملزمة بدقة';
+  } else {
+    icon = '💪';
+    message = 'لا تيأس! راجع الملزمة المرفقة جيداً وحاول مرة أخرى';
+  }
+  
+  document.getElementById('resultIcon').textContent = icon;
+  document.getElementById('resultMessage').textContent = message;
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function restartQuiz() {
+  currentQuestion = 0;
+  score = 0;
+  answered = false;
+  
+  document.getElementById('resultScreen').style.display = 'none';
+  document.getElementById('welcomeScreen').style.display = 'block';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+
+</body>
+</html>
